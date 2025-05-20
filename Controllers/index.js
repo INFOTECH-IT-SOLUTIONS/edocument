@@ -65,7 +65,6 @@ const {
   getDeshboardUserDepPie,
   getDeshboardUserCatGraph,
   getAllDocumentData,
-  getUserDeshboardData,
 } = require("../Services");
 const { createResponse } = require("../Utils/responseGenerate");
 const multer = require("multer");
@@ -145,7 +144,7 @@ module.exports.getDeshboardData = async (req, res, next) => {
 module.exports.getUserDeshboardData = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await getUserDeshboardData(id);
+    const result = await getUserDeshboardDataData(id);
     const result1 = await getUserDeshboardRecentData(id);
     const result2 = await getUserDeshboardMostViewData(id);
     const result3 = await getUserDeshboardDownloadData(id);

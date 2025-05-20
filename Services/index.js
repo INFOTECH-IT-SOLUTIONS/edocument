@@ -15,7 +15,7 @@ module.exports.getDocumentTypeData = () => {
 module.exports.getDeshboardDataData = () => {
   return Execute(`SELECT * FROM VW_DASHBOARD_DETAILS`);
 };
-module.exports.getUserDeshboardData = (id) => {
+module.exports.getUserDeshboardDataData = (id) => {
   return Execute(
     `SELECT * FROM VW_USER_DASHBOARD_DETAILS WHERE USRE_ID=${parseInt(id)}`
   );
@@ -60,11 +60,7 @@ module.exports.getUserDeshboardDownloadData = (id) => {
     `SELECT * FROM VW_MOSTLY_DOWNLOADED_DOCUMENT WHERE USER_ID=${parseInt(id)}`
   );
 };
-module.exports.getUserDeshboardDownloadData = (id) => {
-  return Execute(
-    `SELECT * FROM VW_MOSTLY_DOWNLOADED_DOCUMENT  WHERE USER_ID=${parseInt(id)}`
-  );
-};
+
 module.exports.getModuleInfoData = () => {
   return Execute(`SELECT * FROM USR_MODULE_MST ORDER BY MODULE_MST_ID DESC`);
 };
