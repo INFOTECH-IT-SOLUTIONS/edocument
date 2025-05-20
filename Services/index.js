@@ -15,9 +15,9 @@ module.exports.getDocumentTypeData = () => {
 module.exports.getDeshboardDataData = () => {
   return Execute(`SELECT * FROM VW_DASHBOARD_DETAILS`);
 };
-module.exports.getUserDeshboardDataData = (id) => {
+module.exports.getUserDeshboardData = (id) => {
   return Execute(
-    `SELECT * FROM VW_ALL_DOCUMENTS WHERE USER_ID=${parseInt(id)}`
+    `SELECT * FROM VW_USER_DASHBOARD_DETAILS WHERE USRE_ID=${parseInt(id)}`
   );
 };
 module.exports.getDeshboardDepPie = () => {
@@ -57,6 +57,11 @@ module.exports.getDeshboardDownloadData = () => {
 };
 module.exports.getUserDeshboardDownloadData = (id) => {
   return Execute(
+    `SELECT * FROM VW_MOSTLY_DOWNLOADED_DOCUMENT WHERE USER_ID=${parseInt(id)}`
+  );
+};
+module.exports.getUserDeshboardDownloadData = (id) => {
+  return Execute(
     `SELECT * FROM VW_MOSTLY_DOWNLOADED_DOCUMENT  WHERE USER_ID=${parseInt(id)}`
   );
 };
@@ -71,8 +76,21 @@ module.exports.getSubModuleInfoData = (id) => {
     `SELECT * FROM USR_MODULE_DTL WHERE MODULE_MST_ID=${parseInt(id)}`
   );
 };
-module.exports.getAddDocumentData = () => {
-  return Execute(`SELECT * FROM VW_DOA_FILE_DETAILS ORDER BY TRAN_MST_ID DESC`);
+module.exports.getAddDocumentData = (user_type, user_id) => {
+  if (user_type == "ADMIN") {
+    return Execute(
+      `SELECT * FROM VW_DOA_FILE_DETAILS  ORDER BY TRAN_MST_ID DESC`
+    );
+  } else {
+    return Execute(
+      `SELECT * FROM VW_DOA_FILE_DETAILS WHERE USER_ID= ${user_id}  ORDER BY TRAN_MST_ID DESC`
+    );
+  }
+};
+module.exports.getAllDocumentData = () => {
+  return Execute(
+    `SELECT * FROM VW_DOA_FILE_DETAILS  ORDER BY TRAN_MST_ID DESC`
+  );
 };
 module.exports.getProjectDocData = (id) => {
   return Execute(

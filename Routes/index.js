@@ -52,6 +52,7 @@ const {
   getDeshboardDataChart,
   getUserDeshboardData,
   getDeshboardDataUserChart,
+  getAllDocument,
 } = require("../Controllers");
 
 router.get("/usercreation", getUserCreation);
@@ -122,7 +123,7 @@ router.put("/adddocument", putAddDocument);
 router.put("/putAddDocumentDetailsFile", putAddDocumentDetailsFile);
 
 // MIS report
-router.get("/mis/alldoc", getAddDocument);
+router.get("/mis/alldoc", getAllDocument);
 router.get("/mis/projectdoc", getProjectDoc);
 router.get("/mis/branchdoc", getBranchDoc);
 router.get("/mis/departmentdoc", getDepartmentDoc);
@@ -134,6 +135,5 @@ router.get("/deshboard", getDeshboardData);
 router.get("/userdeshboard/:id", getUserDeshboardData);
 router.get("/deshboardChart", getDeshboardDataChart);
 router.get("/deshboardUserChart/:id", getDeshboardDataUserChart);
-
 
 module.exports = router;

@@ -2,7 +2,7 @@ const { oracledb } = require("../Config/db");
 
 // execute single query
 module.exports.Execute = (QuertyString, object = {}) => {
-  // console.log("QuertyString Execute :", QuertyString);
+  console.log("QuertyString Execute :", QuertyString);
   return new Promise(async function (resolve, reject) {
     try {
       let connection = await oracledb.getConnection("EDOCUMENT");
@@ -17,7 +17,7 @@ module.exports.Execute = (QuertyString, object = {}) => {
   });
 };
 module.exports.ExecuteBind = (QueryString, binds = {}, options = {}) => {
-  // console.log("QuertyString Execute :", QueryString);
+  console.log("QuertyString Execute :", QueryString);
   return new Promise(async (resolve, reject) => {
     let connection;
 

@@ -64,6 +64,8 @@ const {
   getUserDeshboardDownloadData,
   getDeshboardUserDepPie,
   getDeshboardUserCatGraph,
+  getAllDocumentData,
+  getUserDeshboardData,
 } = require("../Services");
 const { createResponse } = require("../Utils/responseGenerate");
 const multer = require("multer");
@@ -143,10 +145,10 @@ module.exports.getDeshboardData = async (req, res, next) => {
 module.exports.getUserDeshboardData = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await getDeshboardDataData();
+    const result = await getUserDeshboardData(id);
     const result1 = await getUserDeshboardRecentData(id);
     const result2 = await getUserDeshboardMostViewData(id);
-    const result3 = await getDeshboardDownloadData();
+    const result3 = await getUserDeshboardDownloadData(id);
 
     console.log(result1);
     const data = {
@@ -218,8 +220,60 @@ module.exports.getSubModuleInfo = async (req, res, next) => {
   }
 };
 module.exports.getAddDocument = async (req, res, next) => {
+  const { user_type, user_id } = req.headers;
+
   try {
-    const result = await getAddDocumentData();
+    const result = await getAddDocumentData(user_type, user_id);
+
+    const transformedResult = [];
+
+    result.forEach((item) => {
+      let existingEntry = transformedResult.find(
+        (entry) => entry.TRAN_MST_ID === item.TRAN_MST_ID
+      );
+
+      if (existingEntry) {
+        existingEntry.details.push({
+          TRAN_DTL_ID: item.TRAN_DTL_ID,
+          FILE_PATH: item.FILE_PATH,
+          ACCESSIBILITY: item.ACCESSIBILITY,
+          DTLS_FILE_NAME: item.DTLS_FILE_NAME,
+        });
+      } else {
+        transformedResult.push({
+          TRAN_MST_ID: item.TRAN_MST_ID,
+          PROJECT_CODE: item.PROJECT_CODE,
+          PROJECT_NAME: item.PROJECT_NAME,
+          BRANCH_ID: item.BRANCH_ID,
+          BRANCH_NAME: item.BRANCH_NAME,
+          DEPT_ID: item.DEPT_ID,
+          DEPT_NAME: item.DEPT_NAME,
+          DOC_TYPE: item.DOC_TYPE,
+          DOC_CAT: item.DOC_CAT,
+          POLICY_NO: item.POLICY_NO,
+          FILE_NAME: item.FILE_NAME,
+          details: [
+            {
+              TRAN_DTL_ID: item.TRAN_DTL_ID,
+              FILE_PATH: item.FILE_PATH,
+              ACCESSIBILITY: item.ACCESSIBILITY,
+              DTLS_FILE_NAME: item.DTLS_FILE_NAME,
+            },
+          ],
+        });
+      }
+    });
+    res.json(
+      createResponse(transformedResult, "Data successfully retrieved", false)
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports.getAllDocument = async (req, res, next) => {
+  try {
+    const result = await getAllDocumentData();
+
     const transformedResult = [];
 
     result.forEach((item) => {
@@ -1008,6 +1062,8 @@ module.exports.postloginCheck = async (req, res, next) => {
           const token = createTokens(
             result[0].EMPLOYEE_ID,
             result[0].EMAIL,
+            result[0].USER_TYPE,
+            result[0].ID,
             roleIds
           );
           const ip =
